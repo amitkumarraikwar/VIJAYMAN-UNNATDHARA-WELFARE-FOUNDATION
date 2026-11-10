@@ -1,11 +1,16 @@
 ---
 import { organization } from '../data/organization';
 import { site } from '../data/site';
+import { seo } from '../lib/seo';
+import { schemaGraph } from '../lib/schema';
+import StructuredData from '../components/StructuredData.astro';
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.jpeg';
 import '../styles/global.css';
 
-interface Props { title?: string; description?: string; eyebrow?: string; }
-const { title = site.title, description = site.description, eyebrow } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://vijayman-unnatdhara.example').toString();
+interface Props { title?: string; description?: string; eyebrow?: string; noindex?: boolean; schemaType?: string; }
+const { title = site.title, description = site.description, eyebrow, noindex = false, schemaType = 'WebPage' } = Astro.props;
+const meta = seo({ title, description, path: Astro.url.pathname, noindex });
 ---
 <!doctype html>
 <html lang="en">
@@ -13,13 +18,23 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://vijayman-un
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {meta.canonical && <link rel="canonical" href={meta.canonical} />}
+    {meta.noindex ? <meta name="robots" content="noindex, follow" /> : !site.siteUrl && <meta name="robots" content="noindex, nofollow" />}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL('/og-image.svg', Astro.site ?? 'https://vijayman-unnatdhara.example')} />
+    {meta.canonical && <meta property="og:url" content={meta.canonical} />}
+    <meta property="og:site_name" content={site.title} />
+    {meta.image && <meta property="og:image" content={meta.image} />}
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {meta.image && <meta name="twitter:image" content={meta.image} />}
     <meta name="theme-color" content="#126c3c" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {site.siteUrl && <StructuredData data={schemaGraph(Astro.url.pathname, title, description, schemaType)} />}
     <title>{title} · VUF</title>
   </head>
   <body>
@@ -27,7 +42,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://vijayman-un
     <header class="site-header">
       <div class="header-inner shell">
         <a class="brand" href="/" aria-label={`${organization.name} home`}>
-          <img src="/logo.jpeg" alt="" width="48" height="48" />
+          <Image src={logo} alt="" width={48} height={48} loading="eager" decoding="async" />
           <span><strong>VIJAYMAN</strong><small>UNNATDHARA WELFARE FOUNDATION</small></span>
         </a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu <span>＋</span></button>
@@ -43,16 +58,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://vijayman-un
     </main>
     <footer class="site-footer">
       <div class="shell footer-grid">
-        <div><a class="brand footer-brand" href="/"><img src="/logo.jpeg" alt="" width="52" height="52" /><span><strong>VIJAYMAN</strong><small>UNNATDHARA WELFARE FOUNDATION</small></span></a><p class="footer-copy">A community-minded foundation based in Lalitpur, Uttar Pradesh.</p><p class="tagline">{organization.tagline}</p></div>
-        <div><p class="footer-label">Explore</p><a href="/about/">About us</a><a href="/our-work/">Our work</a><a href="/leadership/">Leadership</a><a href="/transparency/">Transparency</a></div>
+        <div><a class="brand footer-brand" href="/"><Image src={logo} alt="" width={52} height={52} loading="lazy" decoding="async" /><span><strong>VIJAYMAN</strong><small>UNNATDHARA WELFARE FOUNDATION</small></span></a><p class="footer-copy">A community-minded foundation based in Lalitpur, Uttar Pradesh.</p><p class="tagline">{organization.tagline}</p></div>
+        <div><p class="footer-label">Explore</p><a href="/about/">About us</a><a href="/our-work/">Our work</a><a href="/mission/">Mission</a><a href="/vision/">Vision</a><a href="/gallery/">Gallery</a><a href="/events/">Events</a><a href="/news/">News</a><a href="/leadership/">Leadership</a><a href="/transparency/">Transparency</a><a href="/reports/">Reports</a><a href="/faq/">FAQ</a><a href="/terms-and-conditions/">Terms and Conditions</a></div>
         <div><p class="footer-label">Connect</p><a href={`mailto:${organization.email}`}>{organization.email}</a><span>{organization.location}</span><a href="/contact/">Contact the foundation ↗</a></div>
       </div>
       <div class="shell footer-bottom"><span>© {new Date().getFullYear()} {organization.name}</span><span><a href="/privacy-policy/">Privacy</a> · <a href="/disclaimer/">Disclaimer</a></span></div>
     </footer>
     <script>
-      const toggle = document.querySelector('.menu-toggle');
-      const nav = document.querySelector('.site-nav');
-      toggle?.addEventListener('click', () => { const open = nav?.classList.toggle('is-open') ?? false; toggle?.setAttribute('aria-expanded', String(open)); });
+      const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const nav = document.querySelector<HTMLElement>('.site-nav');
+      const closeMenu = () => { nav?.classList.remove('is-open'); toggle?.setAttribute('aria-expanded', 'false'); };
+      toggle?.addEventListener('click', () => { const open = nav?.classList.toggle('is-open') ?? false; toggle?.setAttribute('aria-expanded', String(open)); const firstLink = nav?.querySelector('a'); if (open && firstLink instanceof HTMLElement) firstLink.focus(); });
+      nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeMenu(); if (toggle instanceof HTMLElement) toggle.focus(); } });
     </script>
   </body>
 </html>

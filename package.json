@@ -5,13 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/validate-site-url.mjs && astro build",
+    "build:test": "node scripts/build-test.mjs",
     "check": "astro check",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "verify:production": "node scripts/verify-production.mjs"
   },
   "dependencies": {
-    "@astrojs/check": "latest",
-    "astro": "latest",
-    "typescript": "latest"
+    "@astrojs/check": "0.9.12",
+    "astro": "7.4.8"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
   }
 }

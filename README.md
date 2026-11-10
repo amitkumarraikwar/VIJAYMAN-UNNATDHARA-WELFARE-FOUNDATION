@@ -9,6 +9,28 @@ pnpm install
 pnpm dev
 ```
 
+`pnpm dev` does not require `PUBLIC_SITE_URL`. Without a configured origin,
+the site omits absolute canonical/SEO URLs and emits `noindex` metadata so a
+local server cannot be mistaken for the production website.
+
+For a local production-output test, use the dedicated test build:
+
+```bash
+pnpm build:test
+pnpm preview
+```
+
+This uses the reserved `https://example.org` origin only inside the local test
+output. It is not the foundation’s domain and is never used by `pnpm build`.
+
+Production builds require the confirmed canonical origin:
+
+```bash
+cp .env.example .env
+# Set PUBLIC_SITE_URL to the confirmed HTTPS domain before building.
+PUBLIC_SITE_URL=https://your-confirmed-domain.example pnpm build
+```
+
 Build and inspect the production output with:
 
 ```bash
@@ -17,7 +39,10 @@ pnpm build
 pnpm preview
 ```
 
-The project currently uses the placeholder production origin in `astro.config.mjs`. Replace it with the foundation’s confirmed domain before launch so canonical URLs, Open Graph URLs and the sitemap use the real domain.
+The project intentionally has no default production domain. `PUBLIC_SITE_URL`
+is required by the production build guard and must be a confirmed HTTPS origin
+without a path, query string or hash. The same value drives canonical URLs,
+Open Graph URLs, JSON-LD, `llms.txt`, robots and the sitemap.
 
 ## Content safety
 

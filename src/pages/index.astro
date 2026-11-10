@@ -3,11 +3,13 @@ import MainLayout from '../layouts/MainLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import TrustNote from '../components/TrustNote.astro';
 import { organization } from '../data/organization';
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.jpeg';
 ---
 <MainLayout>
   <section class="hero shell">
     <div class="hero-copy"><span class="eyebrow">Lalitpur · Uttar Pradesh</span><h1>Together, we can build a <em>better tomorrow.</em></h1><p class="hero-lede">Vijayman Unnatdhara Welfare Foundation is creating a considered, community-led space for service, participation and inclusive development.</p><div class="hero-actions"><a class="button" href="/our-work/">Explore our work <span>↗</span></a><a class="text-link" href="/get-involved/">Find your way to help <span>→</span></a></div></div>
-    <div class="hero-art"><div class="hero-ring"><img src="/logo.jpeg" alt="Vijayman Unnatdhara Welfare Foundation logo" width="520" height="466" /></div><span class="hero-stamp">सेवा ही धर्म<br />सेवा ही कर्म</span><span class="hero-line line-one"></span><span class="hero-line line-two"></span></div>
+    <div class="hero-art"><div class="hero-ring"><Image src={logo} alt="Vijayman Unnatdhara Welfare Foundation logo" width={520} height={466} loading="eager" fetchpriority="high" decoding="async" /></div><span class="hero-stamp">सेवा ही धर्म<br />सेवा ही कर्म</span><span class="hero-line line-one"></span><span class="hero-line line-two"></span></div>
   </section>
   <section class="marquee" aria-label="Foundation tagline"><div>{organization.tagline} <span>✳</span> {organization.taglineEnglish} <span>✳</span> {organization.tagline}</div></section>
   <section class="section shell intro-grid"><div><span class="section-number">01 / 04</span><SectionHeading eyebrow="Who we are" title="A foundation built on the spirit of service." /></div><div class="intro-body"><p class="lead">Our work begins with a simple belief: lasting progress is shaped with people, not just for them.</p><p>Based in Lalitpur, Uttar Pradesh, Vijayman Unnatdhara Welfare Foundation is building its official platform around openness, participation and responsible social welfare. As the foundation develops its initiatives, this space will make its purpose, people and progress easier to understand.</p><a class="text-link" href="/about/">Get to know us <span>→</span></a></div></section>

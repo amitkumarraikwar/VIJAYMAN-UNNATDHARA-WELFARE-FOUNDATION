@@ -1,2 +1,3 @@
 import type { APIRoute } from 'astro';
-export const GET: APIRoute = ({ site }) => new Response(`User-agent: *\nAllow: /\nSitemap: ${new URL('/sitemap.xml', site ?? 'https://vijayman-unnatdhara.example')}\n`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+import { site } from '../data/site';
+export const GET: APIRoute = () => new Response(`User-agent: *\nAllow: /\n${site.siteUrl ? `Sitemap: ${site.siteUrl}/sitemap-index.xml\n` : ''}`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });

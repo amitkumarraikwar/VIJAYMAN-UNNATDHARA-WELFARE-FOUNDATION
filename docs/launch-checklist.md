@@ -1,7 +1,8 @@
 # Launch checklist
 
 - Run `pnpm check` and `pnpm build`.
-- Replace the placeholder domain in `astro.config.mjs`, `robots.txt`, `llms.txt` and any deployment configuration.
+- Set `PUBLIC_SITE_URL` to the confirmed HTTPS origin; the build generates canonical metadata, `robots.txt`, `llms.txt` and the sitemap from it.
+- Confirm `/sitemap-index.xml` is the only submitted sitemap endpoint.
 - Verify all organization fields against official records and approved materials.
 - Add only authentic, consented images and documents.
 - Validate the sitemap, canonical tags, Open Graph image and JSON-LD after the domain is set.

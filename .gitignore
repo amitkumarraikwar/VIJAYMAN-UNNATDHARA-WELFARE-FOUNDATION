@@ -1,1 +1,22 @@
-node_modules
+# Dependencies and build output
+node_modules/
+dist/
+.astro/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Cloud credentials
+.aws/
+**/.aws/
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs
+*.log
