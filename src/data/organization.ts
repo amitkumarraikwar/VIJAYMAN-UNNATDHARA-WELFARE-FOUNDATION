@@ -11,10 +11,15 @@ export const organization = {
   address: 'Basant Vihar Colony, Vanshipura, Lalitpur, Uttar Pradesh, India',
   directors: ['Vijay Verma', 'Durgesh', 'Omkar Rathore'],
   identity: {
-    cin: { value: 'U88900UP2024NPL20268', status: 'supplied' as VerificationStatus, source: 'Organization business card' },
+    cin: {
+      value: 'U88900UP2024NPL202689',
+      status: 'supplied' as VerificationStatus,
+      source: 'Foundation-supplied update',
+      thirdPartyReport: { status: 'reported' as VerificationStatus, source: 'Third-party company directories' }
+    },
     section8License: { value: 'LN-156702', status: 'supplied' as VerificationStatus, source: 'Organization business card' },
     incorporationDate: { value: '15 May 2024', status: 'reported' as VerificationStatus, source: 'Third-party company directories' },
-    alternateCin: { value: 'U88900UP2024NPL202689', status: 'reported' as VerificationStatus, source: 'Third-party company directories' },
+    previousSuppliedCin: { value: 'U88900UP2024NPL20268', status: 'supplied' as VerificationStatus, source: 'Previous organization business card' },
     alternateAddress: { value: 'Bansipura / C/O Mithlesh Rathor, Lalitpur – 284403', status: 'reported' as VerificationStatus, source: 'Third-party company directories' }
   }
 } as const;
