@@ -1,0 +1,4 @@
+---
+import MainLayout from '../layouts/MainLayout.astro'; import SectionHeading from '../components/SectionHeading.astro'; import { organization } from '../data/organization';
+---
+<MainLayout title="Volunteer" description="Connect with Vijayman Unnatdhara Welfare Foundation about volunteering." eyebrow="Volunteer"><section class="section shell intro-grid"><div><SectionHeading title="Bring your time. Bring your care." /></div><div class="prose"><p class="lead">A volunteer form will be enabled when an approved submission workflow is configured.</p><p>For now, please email the foundation with your name, city, skills and the kind of contribution you would like to explore. This avoids pretending that a form has been connected to a working backend.</p><a class="button" href={`mailto:${organization.email}?subject=Volunteer%20interest`}>Email your interest <span>↗</span></a></div></section></MainLayout>

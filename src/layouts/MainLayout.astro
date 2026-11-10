@@ -1,0 +1,58 @@
+---
+import { organization } from '../data/organization';
+import { site } from '../data/site';
+import '../styles/global.css';
+
+interface Props { title?: string; description?: string; eyebrow?: string; }
+const { title = site.title, description = site.description, eyebrow } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://vijayman-unnatdhara.example').toString();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL('/og-image.svg', Astro.site ?? 'https://vijayman-unnatdhara.example')} />
+    <meta name="theme-color" content="#126c3c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title} · VUF</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner shell">
+        <a class="brand" href="/" aria-label={`${organization.name} home`}>
+          <img src="/logo.jpeg" alt="" width="48" height="48" />
+          <span><strong>VIJAYMAN</strong><small>UNNATDHARA WELFARE FOUNDATION</small></span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu <span>＋</span></button>
+        <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+          {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+          <a class="button button-small" href="/get-involved/">Get involved <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </header>
+    <main id="main-content">
+      {eyebrow && <div class="page-intro shell"><span class="eyebrow">{eyebrow}</span><h1>{title}</h1><p>{description}</p></div>}
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="shell footer-grid">
+        <div><a class="brand footer-brand" href="/"><img src="/logo.jpeg" alt="" width="52" height="52" /><span><strong>VIJAYMAN</strong><small>UNNATDHARA WELFARE FOUNDATION</small></span></a><p class="footer-copy">A community-minded foundation based in Lalitpur, Uttar Pradesh.</p><p class="tagline">{organization.tagline}</p></div>
+        <div><p class="footer-label">Explore</p><a href="/about/">About us</a><a href="/our-work/">Our work</a><a href="/leadership/">Leadership</a><a href="/transparency/">Transparency</a></div>
+        <div><p class="footer-label">Connect</p><a href={`mailto:${organization.email}`}>{organization.email}</a><span>{organization.location}</span><a href="/contact/">Contact the foundation ↗</a></div>
+      </div>
+      <div class="shell footer-bottom"><span>© {new Date().getFullYear()} {organization.name}</span><span><a href="/privacy-policy/">Privacy</a> · <a href="/disclaimer/">Disclaimer</a></span></div>
+    </footer>
+    <script>
+      const toggle = document.querySelector('.menu-toggle');
+      const nav = document.querySelector('.site-nav');
+      toggle?.addEventListener('click', () => { const open = nav?.classList.toggle('is-open') ?? false; toggle?.setAttribute('aria-expanded', String(open)); });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+---
+import MainLayout from '../layouts/MainLayout.astro'; import SectionHeading from '../components/SectionHeading.astro'; import { organization } from '../data/organization';
+---
+<MainLayout title="Support the mission" description="Contact Vijayman Unnatdhara Welfare Foundation about supporting its mission." eyebrow="Support the mission"><section class="section shell intro-grid"><div><SectionHeading title="Support should be as transparent as the work." /></div><div class="prose"><p class="lead">Online donations are not enabled yet.</p><p>Verified bank details, payment instructions, receipt procedures, tax status and refund terms have not been provided. We will not publish a QR code, payment button or tax claim without authorization.</p><a class="button" href={`mailto:${organization.email}?subject=Supporting%20the%20foundation`}>Contact about support <span>↗</span></a></div></section></MainLayout>
